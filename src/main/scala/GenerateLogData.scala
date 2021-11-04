@@ -16,6 +16,12 @@ import concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.util.{Failure, Success, Try}
 
+import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.services.s3.AmazonS3Client
+
+import java.nio.file.Paths
+import scala.collection.JavaConverters._
+
 object GenerateLogData:
   val logger = CreateLogger(classOf[GenerateLogData.type])
 
@@ -38,3 +44,12 @@ object GenerateLogData:
     case Failure(exception) => logger.info(s"Log data generation has completed within the allocated time, ${Parameters.runDurationInMinutes}")
   }
 
+  val AWS_ACCESS_KEY = sys.env.getOrElse("AWS_ACCESS_KEY", "AKIA37YNDDL6GF3LCOFX").toString
+  val AWS_SECRET_KEY = sys.env.getOrElse("AWS_SECRET_KEY", "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").toString
+  val bucket = config.getString("awsS3updater.bucket")
+  val AWSCredentials = new BasicAWSCredentials(AWS_ACCESS_KEY, AWS_SECRET_KEY)
+  val amazonS3Client = new AmazonS3Client(AWSCredentials)
+
+  val logfiles = java.nio.file.Files.walk(Paths.get("log")).iterator().asScala.filter(file => file.toString.endsWith(".log")).toList
+
+  logfiles.foreach(logfile => amazonS3Client.putObject(bucket, logfile.toString, logfile.toString))
