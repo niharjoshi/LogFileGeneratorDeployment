@@ -52,4 +52,4 @@ object GenerateLogData:
 
   val logfiles = java.nio.file.Files.walk(Paths.get("log")).iterator().asScala.filter(file => file.toString.endsWith(".log")).toList
 
-  logfiles.foreach(logfile => amazonS3Client.putObject(bucket, logfile.toString, logfile.toString))
+  logfiles.foreach(logfile => amazonS3Client.putObject(bucket, logfile.toString.substring(4), logfile.toString))
