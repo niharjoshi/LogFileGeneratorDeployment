@@ -74,7 +74,6 @@ object GenerateLogData:
           r.set("p-" + java.util.UUID.randomUUID.toString, log)
         }
       )
+      amazonS3Client.putObject(bucket, logfile.toString.substring(4), logs.mkString("\r\n"))
     }
   )
-
-  logfiles.foreach(logfile => amazonS3Client.putObject(bucket, logfile.toString.substring(4), logfile.toString))
