@@ -8,25 +8,31 @@
  *
  */
 import Generation.{LogMsgSimulator, RandomStringGenerator}
-import HelperUtils.{CreateLogger, Parameters}
+import HelperUtils.{CreateLogger, ObtainConfigReference, Parameters}
 
 import collection.JavaConverters.*
 import scala.concurrent.{Await, Future, duration}
 import concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.util.{Failure, Success, Try}
-
 import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.services.s3.AmazonS3Client
 
 import java.nio.file.Paths
-import scala.collection.JavaConverters._
+import scala.collection.JavaConverters.*
+
+import java.util.Base64
+
+import com.redis._
+
 
 object GenerateLogData:
+
   val logger = CreateLogger(classOf[GenerateLogData.type])
 
 //this is the main starting point for the log generator
 @main def runLogGenerator =
+
   import Generation.RSGStateMachine.*
   import Generation.*
   import HelperUtils.Parameters.*
@@ -44,12 +50,31 @@ object GenerateLogData:
     case Failure(exception) => logger.info(s"Log data generation has completed within the allocated time, ${Parameters.runDurationInMinutes}")
   }
 
-  val AWS_ACCESS_KEY = sys.env.getOrElse("AWS_ACCESS_KEY", "AKIA37YNDDL6GF3LCOFX").toString
-  val AWS_SECRET_KEY = sys.env.getOrElse("AWS_SECRET_KEY", "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").toString
+  val AWS_ACCESS_KEY_ENCODED = config.getString("awsConfig.AWS_ACCESS_KEY_ENCODED")
+  val AWS_SECRET_KEY_ENCODED = config.getString("awsConfig.AWS_SECRET_KEY_ENCODED")
+  val AWS_ACCESS_KEY_DECODED = Base64.getDecoder().decode(AWS_ACCESS_KEY_ENCODED)
+  val AWS_SECRET_KEY_DECODED = Base64.getDecoder().decode(AWS_SECRET_KEY_ENCODED)
+  val AWS_ACCESS_KEY = new String(AWS_ACCESS_KEY_DECODED)
+  val AWS_SECRET_KEY = new String(AWS_SECRET_KEY_DECODED)
   val bucket = config.getString("awsS3updater.bucket")
   val AWSCredentials = new BasicAWSCredentials(AWS_ACCESS_KEY, AWS_SECRET_KEY)
   val amazonS3Client = new AmazonS3Client(AWSCredentials)
 
+  val REDIS_HOST = config.getString("awsConfig.REDIS_HOST")
+  val REDIS_PORT = config.getInt("awsConfig.REDIS_PORT")
+  val r = new RedisClient(REDIS_HOST, REDIS_PORT)
+
   val logfiles = java.nio.file.Files.walk(Paths.get("log")).iterator().asScala.filter(file => file.toString.endsWith(".log")).toList
+
+  logfiles.foreach(
+    logfile => {
+      val logs = scala.io.Source.fromFile(logfile.normalize.toString).getLines.toList
+      logs.foreach(
+        log => {
+          r.set("p-" + java.util.UUID.randomUUID.toString, log)
+        }
+      )
+    }
+  )
 
   logfiles.foreach(logfile => amazonS3Client.putObject(bucket, logfile.toString.substring(4), logfile.toString))

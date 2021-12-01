@@ -24,7 +24,8 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest-featurespec" % scalacticVersion % Test,
   "com.typesafe" % "config" % typesafeConfigVersion,
   "com.github.mifmif" % "generex" % generexVersion,
-  "com.amazonaws" % "aws-java-sdk" % "1.12.100"
+  "com.amazonaws" % "aws-java-sdk" % "1.12.100",
+  "net.debasishg" % "redisclient_2.13" % "3.42"
 )
 
 assembly / assemblyMergeStrategy := {
