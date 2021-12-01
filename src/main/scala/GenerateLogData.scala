@@ -19,6 +19,7 @@ import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.services.s3.AmazonS3Client
 
 import java.nio.file.Paths
+import java.io.File
 import scala.collection.JavaConverters.*
 
 import java.util.Base64
@@ -75,5 +76,6 @@ object GenerateLogData:
         }
       )
       amazonS3Client.putObject(bucket, logfile.toString.substring(4), logs.mkString("\r\n"))
+      new File(logfile.toString).delete()
     }
   )
