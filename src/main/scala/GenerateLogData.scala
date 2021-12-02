@@ -75,7 +75,8 @@ object GenerateLogData:
           r.set("p-" + java.util.UUID.randomUUID.toString, log)
         }
       )
-      amazonS3Client.putObject(bucket, logfile.toString.substring(4), logs.mkString("\r\n"))
+      // Optional push log file to S3 bucket
+      // amazonS3Client.putObject(bucket, logfile.toString.substring(4), logs.mkString("\r\n"))
       new File(logfile.toString).delete()
     }
   )
