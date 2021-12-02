@@ -1,10 +1,4 @@
-FROM openjdk:11
-
-ENV SBT_VERSION 1.5.5
-
-RUN curl -L -o sbt-$SBT_VERSION.zip https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.zip
-
-RUN unzip sbt-$SBT_VERSION.zip
+FROM hseeberger/scala-sbt:graalvm-ce-21.3.0-java17_1.5.5_3.1.0
 
 WORKDIR /LogFileGeneratorDeployment
 
