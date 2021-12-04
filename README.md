@@ -1,4 +1,4 @@
-# CS 441 Project - Log File Monitoring & Alert System
+# CS 441 Course Project - Log File Monitoring & Alert System
 
 
 ## Team details
