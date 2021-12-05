@@ -191,6 +191,7 @@ get key
 ```
 
 Sample output:
+
 ![Alt text](doc/redis-cli.png?raw=true "Redis CLI")
 
 ---
@@ -216,12 +217,15 @@ The Spark application batches the consumed logs and subsequently sends email ale
 ### **Project Component 1 Design**
 
 When we run the log file generator, our code produces 100 logs at once:
+
 ![Alt text](doc/generated-logs.png?raw=true "Generated Logs")
 
 We can verify that the logs have been written to the Redis DB:
+
 ![Alt text](doc/logs-in-redis.png?raw=true "Logs In Redis")
 
 We can check the value of a key:
+
 ![Alt text](doc/redis-cli.png?raw=true "Redis CLI")
 
 ---
