@@ -32,7 +32,7 @@ The project comprises 3 Git repositories, each containing their own detailed REA
 
 ## Prerequisites, Installation & Deployment
 
-**A YouTube video documenting the deployment process can be found here:**
+**A YouTube playlist documenting the deployment process can be found here: https://www.youtube.com/playlist?list=PL0k75q4RIbeuLDnClDzYQ0gZvzSnBlZ8Q**
 
 We recommend cloning this repository onto your local machine and running it from the command-line using the interactive build tool **sbt**.
 
@@ -198,7 +198,7 @@ Sample output:
 
 ## Architecture & Flow of Control
 
-**A YouTube video documenting the detailed architecture and flow of control can be found here:**
+**A YouTube playlist documenting the detailed architecture and flow of control can be found here: https://www.youtube.com/playlist?list=PL0k75q4RIbeuLDnClDzYQ0gZvzSnBlZ8Q**
 
 ### Note: This repository pertains to **Project Component 1**.
 
