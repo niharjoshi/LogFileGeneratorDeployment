@@ -1,14 +1,4 @@
-# CS 441 Course Project - Log File Monitoring & Alert System
-
-
-## Team details
-
-### Members:
-
-- ### Nihar Shailesh Joshi (NetID - njoshi27@uic.edu, UIN - 677063712)
-- ### Rajit Subin Puzhakkarezhath (NetID - rpuzha2@uic.edu, UIN - 673351777)
-- ### Indra Sai Kiran Valluru (NetID - ivallu2@uic.edu, UIN - 652537989)
-- ### Shaik Muhammed Adeem (NetID - mshaik35@uic.edu, UIN - 675262084)
+# Log File Monitoring & Alert System
 
 ---
 
